@@ -1,0 +1,25 @@
+.data-container {
+  display: inline-table;
+  margin: 1rem;
+}
+
+.cell {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 0 1rem;
+}
+
+.id {
+  font-size: 3rem;
+}
+
+.cell-name {
+  font-size: 1.7rem;
+  line-height: 2rem;
+  margin-bottom: .75rem;
+}
+
+.cell-value {
+  font-size: 1.85rem;
+  line-height: 2.2rem;
+}

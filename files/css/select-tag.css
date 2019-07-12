@@ -1,0 +1,67 @@
+.select-tag {
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  margin: 0 auto;
+  text-align: left;
+  padding: 0;
+  width: 100%;
+  -ms-user-select: none;
+  -o-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.select-selected-option {
+  display: block;
+  cursor: pointer;
+}
+
+.select-tag.hidden > .select-options-container {
+  opacity: 0;
+  visibility: hidden;
+  top: 50%;
+}
+
+.select-options-container {
+  position: absolute;
+  opacity: 1;
+  top: 100%;
+  visibility: visible;
+  width: 100%;
+  max-height: 30rem;
+  overflow: auto;
+  border: .1rem solid #101010;
+}
+
+.option-tag {
+  display: block;
+  cursor: pointer;
+}
+
+.option-tag:hover {
+  background-color: #303030;
+}
+
+.option-tag:active {
+  background-color: #404040;
+}
+
+.select-icon {
+  font-family: "Fontello";
+  float: right;
+  -ms-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -webkit-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.select-tag.hidden .select-icon {
+  -ms-transform: rotate(0);
+  -o-transform: rotate(0);
+  -moz-transform: rotate(0);
+  -webkit-transform: rotate(0);
+  transform: rotate(0);
+}
