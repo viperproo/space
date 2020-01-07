@@ -7,7 +7,7 @@
   }
 
   function Connect() {
-    $connect = mysqli_connect("localhost", "root", "vertrigo", "Space");
+    $connect = mysqli_connect("localhost", "root", "vertrigo", "space");
     if($connect){
       mysqli_set_charset($connect, 'utf8');
     }
@@ -17,11 +17,14 @@
   function Bans($connect, $user_id) {
     $bans = mysqli_query($connect, "SELECT * FROM `bans` WHERE `users_id` = $user_id ORDER BY `id` DESC LIMIT 1");
     if($bans){
-      $result = mysqli_fetch_assoc($bans)['time'];
-      if(mysqli_num_rows($bans) == 0 || ($result !== NULL && date("Y-m-d H:i:s") > $result)){
-        return 1;
-      }
-      return 0;
+	  if(mysqli_num_rows($bans)) {
+	    $result = mysqli_fetch_assoc($bans)['time'];
+		if($result !== NULL && date("Y-m-d H:i:s") > $result){
+		  return 1;
+	    }
+	    return 0;
+	  }
+      return 1;
     }
     return -1;
   }
@@ -153,5 +156,35 @@
     }
 
     return $array;
+  }
+
+  function SendData() {
+    if($connect = Connect()){
+      $ip = $_SERVER['REMOTE_ADDR'];
+
+      if($check = mysqli_query($connect, "SELECT `ip`, `count` FROM `Data` WHERE `ip` = '$ip'")){
+        if(mysqli_num_rows($check) == 0){
+          $query = mysqli_query($connect, "INSERT INTO `Data` VALUES (NULL, '$ip', 1, now())");
+        }else{
+          $count = mysqli_fetch_row($check)[1] + 1;
+          $query = mysqli_query($connect, "UPDATE `Data` SET `count` = $count, `last` = now() WHERE `ip` = '$ip'");
+        }
+      }
+
+      if($check = mysqli_query($connect, "SELECT `id`, `ip` FROM `clients` WHERE `ip` = '$ip'")){
+        if(mysqli_num_rows($check) == 0){
+          mysqli_query($connect, "INSERT INTO `clients` VALUES (NULL, '$ip')");
+        }
+        $ip = mysqli_fetch_assoc($check)['id'];
+        mysqli_free_result($check);
+        $url = $_SERVER['REQUEST_URI'];
+        $user = "NULL";
+        if(CheckUser()){
+          $user = "'".$_SESSION['user']."'";
+        }
+        mysqli_query($connect, "INSERT INTO `visits` VALUES (NULL, '$ip', $user, '$url', now())");
+      }
+      mysqli_close($connect);
+    }
   }
 ?>
